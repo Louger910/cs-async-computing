@@ -9,19 +9,34 @@ namespace cs_async_computing
 {
     class Program
     {
+        static bool done=true;
+        
         private delegate UInt64 AsyncSumDel(UInt64 n);
         static void Main(string[] args)
         {
-            AsyncSumDel del = Sum;
-            // AsyncSumDel del = new AsyncSumDel(Sum);
-            IAsyncResult ar =
-                del.BeginInvoke(1000000000, EndSum, del);
-            while (!ar.IsCompleted)
+            for (int i = 0; i < 50; i++)
             {
-                Console.Write(".");
-                Thread.Sleep(500);
+                if (done)
+                {
+                    FibonachiAsync(45);
+                    FibonachiAsync(43);
+                    FibonachiAsync(30);
+                }
             }
+            
+            //AsyncSumDel del = Sum;
+            //// AsyncSumDel del = new AsyncSumDel(Sum);
+            //IAsyncResult ar =
+            //    del.BeginInvoke(1000000000, EndSum, del);
+
+            //while (!ar.IsCompleted)
+            //{
+            //    Console.Write(".");
+            //    Thread.Sleep(500);
+            //}
             Console.ReadKey();
+
+            //Console.WriteLine(Fibonachi(10)); 
         }
 
         // v1
@@ -39,6 +54,27 @@ namespace cs_async_computing
             UInt64 res = del.EndInvoke(ar);
             Console.WriteLine("Сумма = " + res);
         }
-        
+
+        public static int Fibonachi(int n)
+        {
+            if (n == 0 || n == 1)
+            {
+                return n;
+            }
+            else
+            {
+                return Fibonachi(n - 1) + Fibonachi(n - 2);
+            }
+        }
+
+        public static async void FibonachiAsync(int a)
+        {
+            done = false;
+            //Console.WriteLine("Начало метода Fibonachi");
+            await Task.Run(() => Console.WriteLine(Fibonachi(a)));
+            done = true;
+            //Console.WriteLine("Конец метода Fibonachi");
+        }
+
     }
 }
