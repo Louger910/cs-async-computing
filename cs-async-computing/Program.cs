@@ -9,21 +9,13 @@ namespace cs_async_computing
 {
     class Program
     {
-        static bool done=true;
-        
         private delegate UInt64 AsyncSumDel(UInt64 n);
         static void Main(string[] args)
         {
-            for (int i = 0; i < 50; i++)
-            {
-                if (done)
-                {
-                    FibonachiAsync(45);
-                    FibonachiAsync(43);
-                    FibonachiAsync(30);
-                }
-            }
-            
+            FibonachiAsync(45);
+            FibonachiAsync(43);
+            FibonachiAsync(30);
+
             //AsyncSumDel del = Sum;
             //// AsyncSumDel del = new AsyncSumDel(Sum);
             //IAsyncResult ar =
@@ -69,11 +61,7 @@ namespace cs_async_computing
 
         public static async void FibonachiAsync(int a)
         {
-            done = false;
-            //Console.WriteLine("Начало метода Fibonachi");
             await Task.Run(() => Console.WriteLine(Fibonachi(a)));
-            done = true;
-            //Console.WriteLine("Конец метода Fibonachi");
         }
 
     }
